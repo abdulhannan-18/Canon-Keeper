@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canon Keeper — AI Story Memory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══ SIDEBAR ══════════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">Canon Keeper</span>
+        <span class="logo-tagline">AI Story Memory</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-panel="write">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Write
+      </button>
+      <button class="nav-item" data-panel="contradictions">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Contradictions
+        <span class="nav-badge" id="contra-count" style="display:none">0</span>
+      </button>
+      <button class="nav-item" data-panel="facts">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Story Bible
+        <span class="nav-badge nav-badge--neutral" id="facts-count" style="display:none">0</span>
+      </button>
+      <button class="nav-item" data-panel="ask">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Ask the Canon
+      </button>
+      <button class="nav-item" data-panel="chapters">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Chapters
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="provider-pill" id="provider-badge">
+        <span class="provider-dot"></span>
+        <span id="provider-label">checking…</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="main-wrapper">
+
+    <!-- Mobile topbar -->
+    <header class="mobile-topbar">
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span class="mobile-title">Canon Keeper</span>
+    </header>
+
+    <!-- ── PANEL: WRITE ── -->
+    <section class="panel active" id="panel-write">
+      <div class="panel-header">
+        <div>
+          <h1 class="panel-title">Write a Chapter</h1>
+          <p class="panel-sub">Paste or write your chapter text. The AI will extract every character, location, and fact — then instantly flag anything that contradicts what you've already established.</p>
+        </div>
+      </div>
+
+      <div class="write-layout">
+        <div class="write-main">
+          <div class="field-group">
+            <label class="field-label" for="chapter-number">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Chapter Number
+            </label>
+            <input id="chapter-number" type="number" min="1" value="1" class="field-input field-input--sm" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="chapter-text">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Chapter Text
+              <span class="char-count" id="char-count">0 chars</span>
+            </label>
+            <textarea id="chapter-text" rows="18" class="field-input field-textarea" placeholder="Elena stepped into the lighthouse, her green eyes scanning the fog-swept shore below. The old keeper, Thomas, had died here three winters ago — or so the village believed…"></textarea>
+          </div>
+
+          <div class="action-row">
+            <button class="btn btn-primary" id="save-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save &amp; Check Canon
+            </button>
+            <button class="btn btn-ghost" id="clear-btn">Clear</button>
+          </div>
+
+          <div class="save-status" id="save-status" style="display:none"></div>
+        </div>
+
+        <div class="write-sidebar">
+          <div class="tip-card">
+            <div class="tip-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <p class="tip-title">How it works</p>
+              <p class="tip-body">The AI reads your chapter and extracts structured facts — character traits, locations, timeline events. Every new chapter is cross-checked against everything you've written before.</p>
+            </div>
+          </div>
+          <div class="tip-card tip-card--warn" id="duplicate-warning" style="display:none">
+            <div class="tip-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div>
+              <p class="tip-title">Chapter already saved</p>
+              <p class="tip-body" id="duplicate-msg">Chapter N has already been saved. Saving again will add duplicate facts.</p>
+            </div>
+          </div>
+          <div class="stats-card" id="stats-card">
+            <div class="stat-item">
+              <span class="stat-num" id="stat-chapters">0</span>
+              <span class="stat-label">Chapters</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num" id="stat-facts">0</span>
+              <span class="stat-label">Facts</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-num stat-num--danger" id="stat-contradictions">0</span>
+              <span class="stat-label">Flags</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PANEL: CONTRADICTIONS ── -->
+    <section class="panel" id="panel-contradictions">
+      <div class="panel-header">
+        <div>
+          <h1 class="panel-title">Contradictions</h1>
+          <p class="panel-sub">Every time a new chapter conflicts with established facts, it's flagged here with a suggested fix.</p>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="refresh-contra-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div class="list-container" id="contradictions-list">
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <p class="empty-title">All clear!</p>
+          <p class="empty-body">No contradictions flagged yet. Save some chapters and the AI will watch for inconsistencies.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PANEL: FACTS / STORY BIBLE ── -->
+    <section class="panel" id="panel-facts">
+      <div class="panel-header">
+        <div>
+          <h1 class="panel-title">Story Bible</h1>
+          <p class="panel-sub">Every fact extracted from your chapters, organized automatically. Your living reference document.</p>
+        </div>
+        <div class="filter-row">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="character">Characters</button>
+          <button class="filter-btn" data-filter="location">Locations</button>
+          <button class="filter-btn" data-filter="timeline">Timeline</button>
+          <button class="filter-btn" data-filter="object">Objects</button>
+        </div>
+      </div>
+      <div class="list-container" id="facts-list">
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <p class="empty-title">Story bible is empty</p>
+          <p class="empty-body">Save your first chapter to start building your story's memory.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PANEL: ASK ── -->
+    <section class="panel" id="panel-ask">
+      <div class="panel-header">
+        <div>
+          <h1 class="panel-title">Ask the Canon</h1>
+          <p class="panel-sub">Ask any question about your story. The AI answers using only facts that have been established in your chapters — no guessing.</p>
+        </div>
+      </div>
+
+      <div class="ask-layout">
+        <div class="ask-input-row">
+          <input id="question-input" type="text" class="field-input ask-input" placeholder="e.g. What color are Elena's eyes?" maxlength="500" />
+          <button class="btn btn-primary" id="ask-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Ask
+          </button>
+        </div>
+
+        <div class="answer-container" id="answer-container" style="display:none">
+          <div class="answer-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Canon Answer
+          </div>
+          <p id="answer-box" class="answer-text"></p>
+        </div>
+
+        <div class="suggested-questions">
+          <p class="sq-label">Try asking…</p>
+          <div class="sq-chips">
+            <button class="sq-chip" data-q="Who are the main characters established so far?">Who are the main characters?</button>
+            <button class="sq-chip" data-q="What locations have been mentioned?">What locations exist?</button>
+            <button class="sq-chip" data-q="What is the current timeline of events?">What's the timeline?</button>
+            <button class="sq-chip" data-q="What important objects have been mentioned?">Important objects?</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PANEL: CHAPTERS ── -->
+    <section class="panel" id="panel-chapters">
+      <div class="panel-header">
+        <div>
+          <h1 class="panel-title">Saved Chapters</h1>
+          <p class="panel-sub">All chapters you've saved, in order. Each chapter feeds the canon database.</p>
+        </div>
+      </div>
+      <div class="list-container" id="chapters-list">
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <p class="empty-title">No chapters yet</p>
+          <p class="empty-body">Go to Write to save your first chapter.</p>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /main-wrapper -->
+
+  <!-- ══ TOAST ══════════════════════════════════════════════════ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ══ LOADING OVERLAY ════════════════════════════════════════ -->
+  <div class="loading-overlay" id="loading-overlay" style="display:none">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <p class="loading-title" id="loading-title">Analyzing chapter…</p>
+      <p class="loading-sub">The AI is reading your text and checking against the canon.</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

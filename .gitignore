@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# secrets - never commit real environment values
+.env
+.env.local
+.env.*.local
+
+# local database (regenerated automatically on first run)
+data/*.db
+data/*.db-journal
+
+# OS / editor noise
+.DS_Store
+*.log
+npm-debug.log*
+
+# IBM Bob session artifacts you want to keep locally but not publish unedited
+.bob/
