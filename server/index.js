@@ -96,7 +96,7 @@ app.use((err, _req, res, _next) => {
 });
 
 // ── Start ─────────────────────────────────────────────────────────
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`\n  Canon Keeper running → http://localhost:${PORT}`);
   console.log(`  AI provider: ${model.activeProviderName}`);
   if (model.activeProviderName === "mock") {
@@ -106,5 +106,7 @@ app.listen(PORT, () => {
     console.log(
       "  Set MODEL_PROVIDER=watsonx or MODEL_PROVIDER=huggingface in .env for real AI.\n"
     );
+  }
+});
   }
 });
