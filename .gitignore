@@ -9,6 +9,8 @@ node_modules/
 # local database (regenerated automatically on first run)
 data/*.db
 data/*.db-journal
+data/*.db-shm
+data/*.db-wal
 
 # OS / editor noise
 .DS_Store
