@@ -13,6 +13,11 @@ const model          = require("./lib/modelAdapter");
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+// Railway (and most cloud platforms) sit behind a reverse proxy.
+// This tells Express to trust the X-Forwarded-* headers so that
+// rate-limiting, IP logging, and HTTPS detection work correctly.
+app.set("trust proxy", 1);
+
 // ── Security: HTTP headers ────────────────────────────────────────
 // Helmet sets Content-Security-Policy, HSTS, no-sniff, etc.
 // We relax the font-src / style-src only enough for Google Fonts in the UI.
