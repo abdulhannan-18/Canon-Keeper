@@ -378,10 +378,27 @@ function renderChapters() {
       <div class="chapter-head">
         <span class="chapter-num-badge">Chapter ${c.chapter_number}</span>
         <span class="chapter-date">${formatDate(c.created_at)}</span>
+        <button class="btn btn-ghost btn-sm delete-chapter-btn" data-id="${c.id}" style="margin-left:auto;color:var(--danger);font-size:12px">Delete</button>
       </div>
       <p class="chapter-preview">${escapeHtml(c.preview)}…</p>
     </div>
   `).join("");
+
+  els.chaptersList.querySelectorAll(".delete-chapter-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      if (!confirm("Delete this chapter and its facts?")) return;
+      try {
+        const res = await fetch(`${API}/chapters/${btn.dataset.id}`, { method: "DELETE" });
+        if (res.ok) {
+          showToast("Chapter deleted");
+          await loadChapters();
+          await loadCanon();
+        } else {
+          showToast("Delete failed");
+        }
+      } catch { showToast("Network error"); }
+    });
+  });
 
   // Update stat
   els.statChapters.textContent = state.chapters.length;

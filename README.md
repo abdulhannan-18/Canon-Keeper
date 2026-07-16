@@ -1,6 +1,8 @@
-﻿# Canon Keeper
+# Canon Keeper
 
 > **Your story's memory. Powered by AI.**
+
+🔗 **Live demo: https://canon-keeper.up.railway.app**
 
 Canon Keeper is an AI continuity partner for writers. Paste chapters as you write — it automatically extracts every character, location, and timeline fact, then instantly flags contradictions when your story conflicts with itself.
 
@@ -25,8 +27,8 @@ Canon Keeper keeps it updated automatically:
 ## Quick start (60 seconds)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/canon-keeper.git
-cd canon-keeper
+git clone https://github.com/abdulhannan-18/Canon-Keeper.git
+cd Canon-Keeper
 npm install
 cp .env.example .env
 npm start

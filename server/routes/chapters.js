@@ -6,6 +6,25 @@ const router = express.Router();
 
 const MAX_CHAPTER_LENGTH = 20_000; // chars — generous for a full chapter
 
+// DELETE /api/chapters/:id — delete a chapter and all its facts/contradictions
+router.delete("/:id", (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) {
+    return res.status(400).json({ error: "Invalid chapter id." });
+  }
+  try {
+    const chapter = db.getChapterById(id);
+    if (!chapter) return res.status(404).json({ error: "Chapter not found." });
+    db.deleteFactsForChapter(chapter.chapter_number);
+    db.deleteContradictionsForChapter(id);
+    db.db.prepare("DELETE FROM chapters WHERE id = ?").run(id);
+    res.json({ deleted: true });
+  } catch (err) {
+    console.error("DELETE /api/chapters/:id:", err.message);
+    res.status(500).json({ error: "Could not delete chapter." });
+  }
+});
+
 // GET /api/chapters — list saved chapters (previews only, no full content)
 router.get("/", (_req, res) => {
   try {
