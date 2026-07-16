@@ -32,21 +32,22 @@ app.use(
 );
 
 // ── Security: CORS ────────────────────────────────────────────────
-const allowedOrigins = (process.env.CORS_ORIGIN || `http://localhost:${PORT}`)
+const allowedOrigins = (process.env.CORS_ORIGIN || "*")
   .split(",")
   .map((o) => o.trim());
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow same-origin and non-browser requests (no Origin header)
-      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-      callback(new Error("Not allowed by CORS"));
-    },
-    methods: ["GET", "POST", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
+const corsOptions = allowedOrigins.includes("*")
+  ? { origin: "*", methods: ["GET", "POST", "DELETE", "OPTIONS"], allowedHeaders: ["Content-Type"] }
+  : {
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+        callback(new Error("Not allowed by CORS"));
+      },
+      methods: ["GET", "POST", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type"],
+    };
+
+app.use(cors(corsOptions));
 
 // ── Security: rate limiting ───────────────────────────────────────
 // Protects metered watsonx.ai / Hugging Face quota from abuse.
